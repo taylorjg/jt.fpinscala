@@ -2,7 +2,9 @@
   <dictionary name="jonathantaylor">
     <words>
       <w>aabbb</w>
+      <w>abcdef</w>
       <w>abcdefghij</w>
+      <w>combinators</w>
     </words>
   </dictionary>
 </component>
