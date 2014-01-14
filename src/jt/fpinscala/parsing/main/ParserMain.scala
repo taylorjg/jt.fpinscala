@@ -34,11 +34,11 @@ object ParserMain {
     println(MyParser.run(or("jig", "saw"))("band"))
 
     // flatMap
-    val flatMapParser = flatMap("""\d""".r)(a => a match {
+    val flatMapParser = flatMap( """\d""".r) {
       case "1" => "blue"
       case "2" => "red"
       case _ => "?"
-    })
+    }
     println("flatMap")
     println(MyParser.run(flatMapParser)("1blue"))
     println(MyParser.run(flatMapParser)("2red"))
