@@ -6,7 +6,12 @@ import jt.fpinscala.parsing.impl.MyParser._
  * Created by Jonathan Taylor on 14/01/2014.
  */
 object ParserMain {
-  def main(args: Array[String]) = {
+  def main(args: Array[String]): Unit = {
+
+    // char
+    println("char")
+    println(MyParser.run(char('a'))("a"))
+    println(MyParser.run(char('a'))("b"))
 
     // string
     println("string")
@@ -58,6 +63,8 @@ object ParserMain {
     println("listOfN")
     println(MyParser.run(listOfN(5, """\d""".r))("0123456789"))
     println(MyParser.run(listOfN(5, """\d""".r))("abcdefghij"))
+    println(MyParser.run(listOfN(5, "a"))("aabbb"))
+    println(MyParser.run(listOfN(5, char('a')))("aabbb"))
 
     // many
     println("many")
@@ -75,8 +82,8 @@ object ParserMain {
     println(MyParser.run("jig" ** "saw")("jigsaw"))
     println(MyParser.run("jig" ** "saw")("jiggle"))
 
+    // exercise 6
     val ex6Parser = flatMap("""(\d)+""".r)(s => listOfN(s.toInt, char('a')))
-    //val ex6Parser = flatMap("""(\d)+""".r)(s => listOfN(s.toInt, "a"))
     println("exercise 6")
     println(MyParser.run(ex6Parser)("1a"))
     println(MyParser.run(ex6Parser)("2aa"))

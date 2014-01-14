@@ -39,12 +39,13 @@ object MyParser extends Parsers[Parser] {
       case f @ Failure(_) => f
     }
 
-  def succeed[A](a: A): Parser[A] = l => Success(a, 0)
+  def succeed[A](a: A): Parser[A] =
+    l => Success(a, l.lastCharsConsumed)
 
   def flatMap[A, B](p: Parser[A])(f: A => Parser[B]): Parser[B] =
     l => p(l) match {
       case Success(a, n) => f(a)(l.advanceBy(n))
-      case f @ Failure(_) => f
+      case f @ Failure(pe) => f
     }
 
   def or[A](p1: Parser[A], p2: => Parser[A]): Parser[A] =

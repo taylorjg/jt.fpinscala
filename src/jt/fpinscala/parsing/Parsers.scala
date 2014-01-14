@@ -22,12 +22,15 @@ trait Parsers[Parser[+_]] { self =>
   def scope[A](msg: String)(p: Parser[A]): Parser[A]
   def attempt[A](p: Parser[A]): Parser[A]
 
+  def char(c: Char): Parser[Char] =
+    string(c.toString) map (_.charAt(0))
+
   def listOfN[A](n: Int, p: Parser[A]): Parser[List[A]] =
-    if (n <= 0) succeed(List())
+    if (n <= 0) succeed(Nil)
     else map2(p, listOfN(n - 1, p))(_ :: _)
 
   def many[A](p: Parser[A]): Parser[List[A]] =
-    map2(p, many(p))(_ :: _) or succeed(List())
+    map2(p, many(p))(_ :: _) or succeed(Nil)
 
   def many1[A](p: Parser[A]): Parser[List[A]] =
     map2(p, many(p))(_ :: _)
@@ -40,8 +43,6 @@ trait Parsers[Parser[+_]] { self =>
 
   def map[A, B](p: Parser[A])(f: A => B): Parser[B] =
     flatMap(p)(a => succeed(f(a)))
-
-  def char(c: Char): Parser[Char] = string(c.toString) map (_.charAt(0))
 
   def errorLocation(e: ParseError): Location =
     e.stack.lastOption.getOrElse((Location("???"), "<no error>"))._1
